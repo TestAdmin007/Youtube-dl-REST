@@ -169,7 +169,7 @@ function main() {
         res.send(queue[JSON.stringify(req.query)]);
     });
 
-    app.get('/login', express.static(`${__dirname}/webapps`));
+    app.get('/login', express.static(`${__dirname}/webapps/login.html`));
 
     app.listen(config.port, config.address, () => {
         console.log('服务已启动');
