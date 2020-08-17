@@ -44,11 +44,11 @@ function main() {
         if (!isBlackIP) next();
     });
     app.use((req, res, next)=>{
-        console.log('客户请求路由: '+ req.url);
-        console.log('客户请求路由: '+ req.path);
+        // console.log('客户请求路由: '+ req.url);
+        // console.log('客户请求路由: '+ req.path);
         // let noLogin = ['/login', '/file'];
         let sess = req.session;
-        switch (req.url) {
+        switch (req.path) {
             case '/login':
                 if (sess.isLigin) {
                     return res.redirect(302, '/');
