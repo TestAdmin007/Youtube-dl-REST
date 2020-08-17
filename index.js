@@ -51,7 +51,7 @@ function main() {
 
         if (reqUrl == '/file') next();
 
-        let sess = req.session();
+        let sess = req.session;
 
         if (reqUrl == '/login') {
             if (sess.isLigin) {
