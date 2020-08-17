@@ -44,7 +44,8 @@ function main() {
         if (!isBlackIP) next();
     });
     app.use((req, res, next)=>{
-        console.log('客户请求路由: '+ req.uri);
+        console.log('客户请求路由: '+ req.url);
+        next()
         // let noLogin = ['/login', '/file'];
     });
     app.use('/', express.static(`${__dirname}/webapps`));
