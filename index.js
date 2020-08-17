@@ -75,6 +75,7 @@ function main() {
                 next();
                 break;
         }
+        req.session.parseNum = sess.parseNum;
     });
     app.use('/', express.static(`${__dirname}/webapps`));
     app.use('/file', (req, res, next) => {
