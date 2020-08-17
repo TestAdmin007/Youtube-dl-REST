@@ -5,7 +5,7 @@ const fs = require('fs');
 const getRemoteIP = require('./get-remote-ip.js');
 
 const config = require('./config.json');
-const session = require('session');
+const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const crypto = require('crypto');
 
