@@ -11,10 +11,10 @@ const crypto = require('crypto');
 function main() {
     let app = new express();
     //声明应用session
-    app.use({
+    app.use(session({
         'secret': randomStr(32),
         'cookie': {maxAge: 1000 * 60 * 60}
-    });
+    }));
 
     app.use((req, res, next) => {
         console.log(`${getRemoteIP(req)}\t=>  ${req.url}`);
