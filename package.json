@@ -12,6 +12,7 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "express": "^4.17.1",
-    "session": "^0.1.0"
+    "express-session": "^1.17.1",
+    "session-file-store": "^1.4.0"
   }
 }

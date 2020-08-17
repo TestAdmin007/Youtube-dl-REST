@@ -6,14 +6,22 @@ const getRemoteIP = require('./get-remote-ip.js');
 
 const config = require('./config.json');
 const session = require('session');
+const FileStore = require('session-file-store')(session);
 const crypto = require('crypto');
+
 
 function main() {
     let app = new express();
     //声明应用session
     app.use(session({
-        'secret': randomStr(32),
-        'cookie': {maxAge: 1000 * 60 * 60}
+        name: 'yunyou',
+        secret: randomStr(32),  // 用来对session id相关的cookie进行签名
+        store: new FileStore(),  // 本地存储session（文本文件，也可以选择其他store，比如redis的）
+        saveUninitialized: false,  // 是否自动保存未初始化的会话，建议false
+        resave: false,  // 是否每次都重新保存会话，建议false
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24  // 有效期，单位是毫秒
+        }
     }));
 
     app.use((req, res, next) => {
