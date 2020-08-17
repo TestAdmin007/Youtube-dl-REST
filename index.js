@@ -46,24 +46,35 @@ function main() {
     app.use((req, res, next)=>{
         console.log('客户请求路由: '+ req.url);
         // let noLogin = ['/login', '/file'];
-
-        let reqUrl = req.url;
-
-        if (reqUrl == '/file') next();
-
         let sess = req.session;
-
-        if (reqUrl == '/login') {
-            if (sess.isLigin) {
-                return res.redirect(302, '/');
-            }
-            next()
+        switch (req.url) {
+            case '/login':
+                if (sess.isLigin) {
+                    return res.redirect(302, '/');
+                }
+                next();
+                break;
+            case '/youtube/parse':
+                //视频解析接口
+                if (!sess.isLigin) {
+                    if (sess.parseNum) {
+                        if (sess.parseNum >= 3) {
+                            return res.send({
+                                'error': "解析受限, 请先登陆!",
+                                'success': false
+                            })
+                        }
+                        sess.parseNum++
+                    } else {
+                        sess.parseNum = 1;
+                    }
+                }
+                next();
+                break;
+            default:
+                next();
+                break;
         }
-
-        if (!sess.isLigin) {
-            return res.redirect(302, '/login')
-        }
-        next();
     });
     app.use('/', express.static(`${__dirname}/webapps`));
     app.use('/file', (req, res, next) => {
