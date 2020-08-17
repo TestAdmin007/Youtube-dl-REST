@@ -45,6 +45,7 @@ function main() {
     });
     app.use((req, res, next)=>{
         console.log('客户请求路由: '+ req.url);
+        console.log('客户请求路由: '+ req.path);
         // let noLogin = ['/login', '/file'];
         let sess = req.session;
         switch (req.url) {
