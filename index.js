@@ -5,9 +5,17 @@ const fs = require('fs');
 const getRemoteIP = require('./get-remote-ip.js');
 
 const config = require('./config.json');
+const session = require('session');
+const crypto = require('crypto');
 
 function main() {
     let app = new express();
+    //声明应用session
+    app.use({
+        'secret': randomStr(32),
+        'cookie': {maxAge: 1000 * 60 * 60}
+    });
+
     app.use((req, res, next) => {
         console.log(`${getRemoteIP(req)}\t=>  ${req.url}`);
         let isBlackIP = false;
@@ -26,6 +34,10 @@ function main() {
             //
         }
         if (!isBlackIP) next();
+    });
+    app.use((req, res, next)=>{
+        console.log('客户请求路由: '+ req.uri);
+        // let noLogin = ['/login', '/file'];
     });
     app.use('/', express.static(`${__dirname}/webapps`));
     app.use('/file', (req, res, next) => {
@@ -129,6 +141,13 @@ function getAudio(id, format, rate, info, size) {
 
 function getVideo(id, format, scale, frame, rate, info, size) {
     return { id, format, scale, frame, rate, info, size };
+}
+
+function randomStr(len) {
+    if (!Number.isFinite(len)) {
+        throw new TypeError('Expected a finite number');
+    }
+    return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
 }
 
 function task() {
