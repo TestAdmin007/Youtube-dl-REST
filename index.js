@@ -45,8 +45,25 @@ function main() {
     });
     app.use((req, res, next)=>{
         console.log('客户请求路由: '+ req.url);
-        next()
         // let noLogin = ['/login', '/file'];
+
+        let reqUrl = req.url;
+
+        if (reqUrl == '/file') next();
+
+        let sess = req.session();
+
+        if (reqUrl == '/login') {
+            if (sess.isLigin) {
+                return res.redirect(302, '/');
+            }
+            next()
+        }
+
+        if (!sess.isLigin) {
+            return res.redirect(302, '/login')
+        }
+        next();
     });
     app.use('/', express.static(`${__dirname}/webapps`));
     app.use('/file', (req, res, next) => {
@@ -138,6 +155,8 @@ function main() {
         // console.log(queue);
         res.send(queue[JSON.stringify(req.query)]);
     });
+
+    app.get('/login', express.static(`${__dirname}/webapps`));
 
     app.listen(config.port, config.address, () => {
         console.log('服务已启动');
